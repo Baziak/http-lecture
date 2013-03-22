@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>HTTP Basics</title>
+
+    <link href='http://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css' />
+    <link href='http://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css' />
+    <link href="css/http-slides.css" rel="stylesheet" />
+</head>
+<body class="impress-not-supported">
+
+<div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<div id="impress">
+
+    <div id="start" class="step slide start-slide" data-x="0" data-y="-3000">
+        <h1>HTTP Basics</h1>
+        <h2></h2>
+    </div>
+
+    <div class="step slide" data-x="0" data-y="-1500">
+        <h2>What is inside?</h2>
+        <ul>
+            <li>URL and URI formats</li>
+            <li>HTTP Overview</li>
+            <li>Request format [methods, headers and body]</li>
+            <li>Response format [codes, headers and body encodings]</li>
+            <li>Response code</li>
+            <li>Secure HTTP</li>
+        </ul>
+
+    </div>
+
+    <div class="step slide" data-x="2000" data-y="-1500">
+        <h2>Generic URL (RFC 1738)</h2>
+
+        <ul>
+            <li>URL Types:
+                <pre>
+http | ftp | news | nntp | telnet | gopher |
+wais | mailto | file | prospero | generic
+</pre>
+            </li>
+            <li>genericUrl <pre>scheme ":" schemepart</pre></li>
+            <li>scheme <pre>1*[ lowalpha | digit | "+" | "-" | "." ]</pre></li>
+            <li>Examples:<pre>
+http, https, ftp, mailto, git, ssh, svn+http
+            </pre></li>
+
+        </ul>
+
+</div>
+    <div class="step slide" data-x="4000" data-y="-1500">
+        <h2>HTTP URL (RFC 1738)</h2>
+
+        <ul>
+            <li>Format:<pre>"http:" "//" host [ ":" port ] <br/>[ "/" hpath [ "?" search ]]</pre>
+                <ul>
+                    <li>Host can be domain name or IP address</li>
+                    <li>Domain name contains letters, digits and "-"</li>
+                    <li>Port contains digits.</li>
+                </ul>
+            </li>
+        </ul>
+        <pre>
+hpath  = hsegment *[ "/" hsegment ]
+search = hsegment
+        </pre>
+    </div>
+
+    <div class="step slide" data-x="6000" data-y="-1500">
+        <h2>HTTP URL (RFC 1738)</h2>
+
+<pre>
+hsegment    = *[ uchar | ";" | ":" | "@" | "&" | "=" ]
+uchar       = unreserved | escape
+unreserved  = alpha | digit | safe | extra
+safe        = "$" | "-" | "_" | "." | "+"
+extra       = "!" | "*" | "'" | "(" | ")" | ","
+escape      = "%" hex hex
+                    </pre>
+    </div>
+
+    <div class="step slide" data-x="8000" data-y="-1500">
+        <h2>URI (RFC 3986)</h2>
+
+        <ul>
+            <li>URI Reference <pre>URI / relative-ref</pre></li>
+            <li>URI: <pre>scheme ":" hier-part [ "?" query ] [ "#" fragment ]</pre>
+                <ul>
+                    <li>We have <code>#fragment now!</code></li>
+                    <li>User info can be added.</li>
+                    <li>Not allowed in domain: <pre>":", "/", "?", "#", "[", "]", "@"</pre></li>
+                </ul>
+            </li>
+        </ul>
+        <br />
+    </div>
+
+    <div class="step slide" data-x="10000" data-y="-1500">
+        <h2>History</h2>
+        <ul>
+            <li>1991 – HTML</li>
+            <li>1991 – <b>HTTP 0.9</b></li>
+            <li>1993 – Images in HTML (standardized in 1995)</li>
+            <li>1995 – JavaScript</li>
+            <li>1995 – <b>HTTP 1.0</b> (RFC 1945)</li>
+            <li>1996 – CSS</li>
+            <li>1997 – <b>HTTP 1.1</b> (RFC 2068)</li>
+            <li>1999 – <b>HTTP 1.1</b> (RFC 2616)</li>
+            <li>2013 – <b>HTTP 2.0</b> (SPDY)</li>
+        </ul>
+    </div>
+
+    <div class="step slide" data-x="10000" data-y="0">
+        <h2>Overview</h2>
+        <ul>
+            <li>Application Layer Protocol</li>
+            <li>Client-Server</li>
+            <li>Request-Response</li>
+        </ul>
+    </div>
+
+    <div class="step slide" data-x="8000" data-y="0">
+        <h2>HTTP Request</h2>
+        <pre>
+<b>POST</b> <b>/secret-messages</b> HTTP/1.1
+Host: <b>spy.nixsolutions.com</b>
+Accept-Encoding: gzip,deflate
+Content-Type: <b>application/x-www-form-urlencoded; charset=utf-8</b>
+Content-Length: <b>41</b>
+User-Agent: <b>MI6.Browser</b>
+<b>
+recipient=007&message=Die%20Another%20Day
+</b>
+        </pre>
+    </div>
+
+    <div class="step slide" data-x="6000" data-y="0">
+        <h2>HTTP Request Methods</h2>
+        <ul>
+            <li>Safe Methods
+                <ul>
+                    <li>GET and HEAD methods SHOULD not generate side-effects</li>
+                </ul>
+            </li>
+
+            <li>Idempotent Methods
+                <ul>
+                    <li>The side-effects of N > 0 identical GET, HEAD, PUT and DELETE requests is the same as for a single request.</li>
+                    <li>Methods OPTIONS and TRACE SHOULD NOT have side effects, and so are inherently idempotent.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="step slide" data-x="4000" data-y="0">
+        <h2>Important Methods</h2>
+        <ul>
+            <li>GET and HEAD
+                <ul>
+                    <li>GET returns data. HEAD returns metadata only.</li>
+                    <li>Both are cacheable.</li>
+                </ul>
+            </li>
+
+            <li>POST and PUT
+                <ul>
+                    <li>They may have body.</li>
+                    <li>POST can create new entities. PUT only update.</li>
+                    <li>They both are not cacheable.</li>
+                </ul>
+            </li>
+
+            <li>DELETE Method
+                <ul>
+                    <li>Looks like GET. Works as expected.</li>
+                </ul>
+            </li>
+
+        </ul>
+
+    </div>
+    <div class="step slide" data-x="2000" data-y="0">
+        <h2>OPTIONS, TRACE and CONNECT Methods</h2>
+        <ul>
+            <li>OPTIONS
+                <ul>
+                    <li>Returns the communication options</li>
+                    <li>Works for Request-URI or server in general.</li>
+                    <li>Responses to this method are not cacheable.</li>
+                </ul>
+            </li>
+            <li>TRACE
+                <ul>
+                    <li>Reflects client request.</li>
+                    <li>Must not be cached.</li>
+                </ul>
+            </li>
+            <li>CONNECT
+                <ul>
+                    <li>Reserved for tunneling through proxy.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="step slide" data-x="0" data-y="0">
+        <h2>Other HTTP Request parts</h2>
+        <ul>
+            <li>Request Host and Path
+            </li>
+            <li>Encodings and Types
+                <ul>
+                    <li>Content-Encoding (e.g. gzip)</li>
+                    <li>Content-Type (e.g. application/xml; charset=UTF-8)</li>
+                    <li>Transfer-Encoding (e.g. chunked)</li>
+                </ul>
+            </li>
+            <li>Request Body
+                <ul>
+                    <li>application/x-www-form-urlencoded</li>
+                    <li>application/octet-stream</li>
+                    <li>multipart/form-data</li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="step slide" data-x="0" data-y="1500">
+        <h2>HTTP Response</h2>
+        <pre>
+HTTP/1.1 <b>200</b> OK
+Date: <b>Wed, 20 Mar 2013 16:26:51 GMT</b>
+Server: <b>Apache</b>
+Last-Modified: <b>Wed, 08 Jan 2013 23:11:55 GMT</b>
+Etag: "<b>3f80f-1b6-3e1cb03b</b>"
+Content-Type: <b>text/json; charset=utf-8</b>
+Content-Length: <b>30</b>
+<b>
+{"secretMessageId":"Iqu0tier"}</b>
+        </pre>
+    </div>
+
+    <div class="step slide" data-x="2000" data-y="1500">
+        <h2>HTTP Response Codes</h2>
+        <ul>
+            <li>Informational: <code>100 Continue, 101 Switching Protocols</code></li>
+            <li>Successful: <code>200 OK, 201 Created, 204 No Content</code></li>
+            <li>Redirection: <code>301 Moved Permanently, 302 Found, 304&nbsp;Not&nbsp;Modified</code></li>
+            <li>Client Error: <code>400 Bad Request, 403 Forbidden, 404&nbsp;Not&nbsp;Found</code></li>
+            <li>Server Error: <code>500 Internal Server Error, 503&nbsp;Service&nbsp;Unavailable</code></li>
+        </ul>
+    </div>
+
+    <div class="step slide" data-x="4000" data-y="1500">
+        <h2>Client Error Codes</h2>
+        <ul>
+            <li>400 Bad Request</li>
+            <li>401 Unauthorized</li>
+            <li>402 Payment Required</li>
+            <li>403 Forbidden</li>
+            <li>405 Method Not Allowed</li>
+            <li>413 Request Entity Too Large</li>
+            <li>414 Request-URI Too Long</li>
+        </ul>
+    </div>
+
+    <div class="step slide" data-x="6000" data-y="1500">
+        <h2>HTTP Server Error Response Codes</h2>
+        <ul>
+            <li>500 Internal Server Error</li>
+            <li>501 Not Implemented</li>
+            <li>502 Bad Gateway</li>
+            <li>503 Service Unavailable</li>
+            <li>504 Gateway Timeout</li>
+            <li>505 HTTP Version Not Supported</li>
+        </ul>
+    </div>
+
+    <div class="step slide" data-x="8000" data-y="1500">
+        <h2>Secure HTTP, FTP</h2>
+        <ul>
+            <li>Structure:
+                <ul>
+                    <li>HTTP, FTP, etc. – Application Layer</li>
+                    <li>TLS/SSL – Presentation Layer</li>
+                    <li>TCP – Trasport/Network Layer</li>
+                    <li>IP – Network Layer</li>
+                </ul>
+            </li>
+            <li>Workflow</li>
+            <li>Use</li>
+        </ul>
+
+    </div>
+
+    <div class="step slide" data-x="10000" data-y="1500">
+        <h2>HTTP 2.0 (SPDY)</h2>
+        <ul>
+            <li>Asynchronous connection multiplexing</li>
+            <li>Header compression</li>
+            <li>Request-response pipelining</li>
+        </ul>
+    </div>
+
+    <div class="step slide" data-x="10000" data-y="3000">
+        <h2>Links</h2>
+        <ul>
+            <li><a href="http://www.ietf.org/rfc/rfc1738.txt">URL RFC 1738</a></li>
+            <li><a href="http://tools.ietf.org/html/rfc3986">URI RFC 3986</a></li>
+            <li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616.html">HTTP 1.1 RFC 2616</a></li>
+            <li><a href="http://www.ietf.org/rfc/rfc1867.txt">Form-based File Upload in HTML RFC 1867</a></li>
+            <li><a href="http://www.chromium.org/spdy">SPDY</a></li>
+            <li><a href="http://tools.ietf.org/html/draft-ietf-httpbis-http2-00">SPDY/HTTP 2.0 RFC Draft</a></li>
+
+        </ul>
+    </div>
+
+
+    <div id="overview" class="step" data-x="4000" data-y="0" data-scale="10">
+    </div>
+
+</div>
+
+<script src="js/impress.js"></script>
+<script>
+    impress().init();
+</script>
+
+</body>
+</html>
