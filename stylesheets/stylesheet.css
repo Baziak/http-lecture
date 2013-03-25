@@ -98,6 +98,21 @@ header h2 {
   max-width: 100%;
 }
 
+#start {
+	margin-bottom: 40px;
+}
+
+#start .start_button {
+	font-size: 2em;
+}
+
+#start .start_button:before {
+	content: '▶';
+	color: #0c0;
+    font-size: 0.8em;
+    margin-right: 0.2em;
+}
+
 #downloads {
   margin-bottom: 40px;
 }
